@@ -14,56 +14,20 @@
       but they cannot retake an old one -->
 
 
-    <form method="GET">
+    <form action="HytecCampQuestionPage.php" method="GET">
       <p>Username:
       <input type="text" name="name" id="name">
       <input type="submit" value="Submit">
 
       <?php
 
+      include 'HytecFunctions.php';
       if((isset($_GET['name']))  ) {
       $name = $_GET["name"];
       addName($name);
       }
 
-      function connectDB() {
-        $servername = "localhost";
-        $username = "root";
-        $password = "C1e2r3n4y5f629#";
-        $dbname = "QuizApp";
-
-        //Create a connection object and return it to the caller
-
-        $conn = new mysqli($servername, $username,
-        $password, $dbname);
-
-        if ($conn->connect_error){
-          die("Connection failed: " . $conn->connect_error);
-        }
-
-        return $conn;
-        }
-
-
-
-        function addName($name) {
-          $conn = connectDB();
-
-          //Insert into the QuizApp table the element with the passed information
-
-          $sql = $conn->prepare("INSERT INTO Names (Name, Score)
-          VALUES(?, 0)");
-
-          // Puts values into above ?s
-
-          $sql->bind_param("s", $name);
-          $sql->execute();
-
-          $sql->close();
-          $conn->close();
-        }
-           ?>
-
+      ?>
     </form>
   </body>
 </html>
