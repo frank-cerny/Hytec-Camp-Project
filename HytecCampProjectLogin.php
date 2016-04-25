@@ -14,20 +14,11 @@
       but they cannot retake an old one -->
 
 
-    <form action="HytecCampQuestionPage.php" method="GET">
+    <form action="HytecCampQuestionPage.php" method="POST">
       <p>Username:
       <input type="text" name="name" id="name">
       <input type="submit" value="Submit">
 
-      <?php
-
-      include 'HytecFunctions.php';
-      if((isset($_GET['name']))  ) {
-      $name = $_GET["name"];
-      addName($name);
-      }
-
-      ?>
     </form>
   </body>
 </html>

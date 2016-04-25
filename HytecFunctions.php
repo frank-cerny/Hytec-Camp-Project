@@ -1,4 +1,5 @@
 <?php
+
 function connectDB() {
   $servername = "localhost";
   $username = "root";
@@ -17,7 +18,6 @@ function connectDB() {
   return $conn;
   }
 
-
   function addName($name) {
     $conn = connectDB();
 
@@ -34,12 +34,13 @@ function connectDB() {
     $sql->close();
     $conn->close();
   }
-  function showQuestion() {
+
+  function showQuestion($number) {
     $conn = connectDB();
 
     //Select everything from the Question table and print it to the screen within <radio tags>
 
-    $sql = $conn->prepare("SELECT id, question, a, b, c, d, answer FROM Question WHERE id=1");
+    $sql = $conn->prepare("SELECT id, question, a, b, c, d, answer FROM Question WHERE id=$number");
 
     $sql->execute();
     $sql->bind_result($id, $question, $a, $b, $c, $d, $answer);
@@ -47,14 +48,41 @@ function connectDB() {
     while($sql->fetch()) {
       echo "<h1>Question $id </h1>";
       echo "<p>$question</p>";
-      echo "<form>
-        <input type=\"radio\" name=\"answer\" value=\"a\">$a<br>
-        <input type=\"radio\" name=\"answer\" value=\"b\">$b<br>
-        <input type=\"radio\" name=\"answer\" value=\"c\">$c<br>
-        <input type=\"radio\" name=\"answer\" value=\"d\">$d<br>
+      echo "<form action=\"\" method=\"POST\">
+        <input type=\"radio\" name=\"Useranswer\" value=\"a\">$a<br>
+        <input type=\"radio\" name=\"Useranswer\" value=\"b\">$b<br>
+        <input type=\"radio\" name=\"Useranswer\" value=\"c\">$c<br>
+        <input type=\"radio\" name=\"Useranswer\" value=\"d\">$d<br>
         <input type=\"submit\" name=\"Submit\">
       </form>";
+
+      if((isset($_POST["Useranswer"]))  ) {
+      $userInput = $_POST["Useranswer"];
+      checkAnswer($number, $userInput);
+      }
+      else {
+        echo "Crap";
+      }
+      
+      echo "<a href=\"http://localhost/Html/QuizApp/HytecCampProjectLogin.php\">Login Page </a>";
+      }
+
+    $sql->close();
+    $conn->close();
+  }
+
+  function checkAnswer($questionNumber, $answer) {
+    $conn = connectDB();
+
+    $sql = $conn->prepare("SELECT answer FROM Question WHERE id=$questionNumber");
+
+    $sql->execute();
+    $sql->bind_result($DBanswer);
+
+    if ($answer = $DBanswer) {
+      echo "Winner";
     }
+
     $sql->close();
     $conn->close();
   }
