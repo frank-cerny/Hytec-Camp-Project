@@ -8,3 +8,11 @@ Added:
 
 Next Update:
 -Get checkAnswer working and create update score function
+
+Changelog 4-26-16
+Added: 
+-One Question Per Page Whoop Whoop
+-Added GetName(not working) and updated checkAnswer (not working), updateScore(not working)
+
+Next-Update:
+-Get checkAnswer working and figure out how to pass name into the update score function
