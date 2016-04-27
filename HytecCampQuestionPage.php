@@ -10,15 +10,15 @@
     if((isset($_POST["name"]))  ) {
     $name = $_POST["name"];
     addName($name);
+    //getName();
     }
     else {
     }
-
     $questionNumber = 1;
-    while ($questionNumber <= 10) {
-      showQuestion($questionNumber);
-      $questionNumber++;
-    }
+    if((isset($_POST["question"]))) {
+    $questionNumber = $_POST["question"];
+  }
+  showQuestion($questionNumber);
     ?>
   </body>
 </html>
