@@ -16,3 +16,13 @@ Added:
 
 Next-Update:
 -Get checkAnswer working and figure out how to pass name into the update score function
+
+Changelog 5-1-16
+Added: 
+-GetName(), checkAnswer(), UpdateScore() All working
+-created and EndGame() function that prints ending score
+-Made a leaderboard page which grabs and displays top scores
+-A complete alpha version is complete...
+
+Next-Update:
+Style and make it look pretty
