@@ -28,7 +28,7 @@ function connectDB() {
 
     // Puts values into above ?s
 
-    $sql->bind_param("s", $name);
+    $sql->bind_param('s', $name);
     $sql->execute();
 
     $sql->close();
@@ -54,7 +54,7 @@ function connectDB() {
         <input type=\"radio\" name=\"Useranswer\" value=\"b\">$b<br>
         <input type=\"radio\" name=\"Useranswer\" value=\"c\">$c<br>
         <input type=\"radio\" name=\"Useranswer\" value=\"d\">$d<br>
-        <input type=\"submit\" name=\"Submit\">
+        <input type=\"submit\" name=\"Next\">
         <input type=\"hidden\" name=\"question\" value=\"$id\">
       </form>";
       if((isset($_POST["Useranswer"]))  ) {
@@ -62,7 +62,7 @@ function connectDB() {
       checkAnswer($number, $userInput);
       }
       else {
-        echo "Crap";
+        // echo "Crap";
       }
       echo "<a href=\"http://localhost/Html/QuizApp/HytecCampProjectLogin.php\">Login Page </a>";
       }
@@ -73,62 +73,69 @@ function connectDB() {
 
   function checkAnswer($questionNumber, $answer) {
     $conn = connectDB();
-
+    $questionNumber--;
     $sql = $conn->prepare("SELECT answer FROM Question WHERE id=?");
-    $sql->bind_param("i",$questionNumber);
+    $sql->bind_param('i',$questionNumber);
 
     $sql->execute();
     $sql->bind_result($DBanswer);
     $sql->fetch();
 
-    /*
-    echo "DB" .$DBanswer;
-    echo "user" .$answer;
-    */
+
+    // echo "DB" .$DBanswer;
+    // echo "user" .$answer;
 
     if ($answer == $DBanswer) {
-      echo "Winner";
+      echo "<p>Correct!</p>";
       updateScore();
     }
     else {
-      echo "Loser";
+      echo "<p>Incorrect, correct answer was $DBanswer</p>";
     }
     $sql->close();
     $conn->close();
   }
   function updateScore() {
+
+    mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
     $conn = connectDB();
 
     // Score Update
-    $name = "Trial1";
-    // $name = getName();
+    $name = $_SESSION["userName"];
+    // echo $name;
+
     $sql = $conn->prepare("SELECT Score FROM Names WHERE Name=?");
-    $sql->bind_param("s",$name);
+    $sql->bind_param('s',$name);
     $sql->execute();
     $sql->bind_result($score);
     $sql->fetch();
+    $sql->close();
 
-    echo "This actually works";
+    // echo "This actually works";
+    // echo "Score Before" .$score;
     $score++;
-    echo $score;
+    // echo "Score After" .$score;
 
-    $sql = $conn->prepare("UPDATE Names SET Score='$score' WHERE Name=?");
-    $sql->bind_param("s",$name);
+    $sql = $conn->prepare("UPDATE Names SET Score=? WHERE Name=?");
+    $sql->bind_param('is',$score, $name);
     $sql->execute();
-    $sql->fetch();
 
     $sql->close();
     $conn->close();
+  }
+  function EndGame() {
+    $conn = connectDB();
+    $name = $_SESSION["userName"];
 
+    $sql = $conn->prepare("SELECT Score FROM Names WHERE Name=?");
+    $sql->bind_param('s',$name);
+    $sql->execute();
+    $sql->bind_result($score);
+    $sql->fetch();
+    $sql->close();
+
+    echo "<p>You recieved a $score/10</p>";
+
+    echo "<a href=\"http://localhost/Html/QuizApp/HytecCampProjectLogin.php\">Login Page </a>";
   }
-  /*
-  function getName() {
-    if((isset($_POST["name"]))  ) {
-    $name = $_POST["name"];
-    }
-    else {
-    }
-    return $name;
-  }
-  */
 ?>
